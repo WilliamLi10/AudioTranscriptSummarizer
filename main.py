@@ -16,6 +16,8 @@ def main():
     file.close()
 
     summary = str(generate_summary(3, document)).split(" ")
+    summary[0] = summary[0][1:]
+    summary[-1] = summary[-1][:-1]
     pdf_converter(summary)
     
 
