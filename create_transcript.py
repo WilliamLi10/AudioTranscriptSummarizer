@@ -1,26 +1,36 @@
-import speech_recognition as sr
+from distutils.command.upload import upload
+from sre_constants import JUMP
+from google.cloud import speech_v1 as speech
+from google.cloud import storage
+import sys
 
-def create_transcript(file):
 
-    r = sr.Recognizer()
-    transcript_data = ''
+def add_file(upload_path, destination_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket("lec-rec")
+    blob = bucket.blob(destination_name)
+    blob.upload_from_filename(upload_path)
+def speech_to_text(config, audio):
+    client = speech.SpeechClient()
+    return client.long_running_recognize(config=config, audio=audio)
+    
 
-    with sr.AudioFile(file) as source:
-        r.adjust_for_ambient_noise(source)
         
-        #listen to the audio in small increments, concatenating to transcriptData
-        while True:
-            try:
-                audio_data = r.record(source, duration=30)
-                transcript_part = r.recognize_google(audio_data)
-                transcript_data += transcript_part + " "
-            except:
-                break
-
-    #print(transcriptData)
-
-    f = open("transcript.txt", "w")
-    f.write(transcript_data)
-    f.close()
 
 
+
+
+
+def create_transcript(wav_file)
+    add_file(wav_file,wav_file)
+    config = dict(language_code="en-US",audio_channel_count = 2,enable_automatic_punctuation=True)
+    uri_name = "gs://lec-rec/" + wav_file
+    audio = dict(uri= uri_name)
+    operation = speech_to_text(config, audio)
+    response = operation.result(timeout = 90)
+    rets = ""
+    for result in response.results:
+        best_alternative = result.alternatives[0]
+        transcript = best_alternative.transcript
+        rets += transcript
+    return rets
