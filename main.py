@@ -9,12 +9,12 @@ CHARACTER_LIMIT = 100
 
 def main():
 
-    #wav_file = str(sys.argv[1])
-    #text = create_transcript(wav_file)
-    #outFile = open("sample.txt","w")
-    #outFile.write(text)
-    #outFile.close()
-    parser = PlaintextParser.from_file("book-1984.txt",Tokenizer("english"))
+    wav_file = str(sys.argv[1])
+    text = create_transcript(wav_file)
+    outFile = open("transcript.txt","w")
+    outFile.write(text)
+    outFile.close()
+    parser = PlaintextParser.from_file("transcript.txt",Tokenizer("english"))
 
 
     summarizer = LexRankSummarizer()
